@@ -13,11 +13,12 @@ class TestDataSeeder extends Seeder
     {
         $splitNull = '0';
         $splitChar = ':';
-        $typeName = array('Music', 'Radio', 'TalkShow');
+        $typeName = array('__CATALOG_MUSIC__', '__CATALOG_RADIO__', '__CATALOG_TSHOW__');
+        $typeCode = array('00', '01', '02');
         for($type = 0; $type < 3; $type++) {
-            $typeId = $typeName[$type].$splitChar.$splitNull.$splitChar.$splitNull;
+            $typeId = $typeName[$type];
             for($channelCount = 1; $channelCount <= 3; $channelCount++) {
-                $channelId = $typeName[$type].$splitChar.$channelCount.$splitChar.$splitNull;
+                $channelId = $typeCode[1].$channelCount;
                 DB::table('channels')->insert([
                     'id' => $channelId,
                     'type' => $typeId,
@@ -27,7 +28,7 @@ class TestDataSeeder extends Seeder
                 ]);
                 for($mediaCount = 1; $mediaCount <= 10; $mediaCount++) {
                     DB::table('media')->insert([
-                        'id' => $typeName[$type].$splitChar.$channelCount.$splitChar.$mediaCount,
+                        'id' => $typeCode[2].$mediaCount,
                         'channelId' => $channelId,
                         'netSource' => 'https://www.youtube.com/watch?v=PMivT7MJ41M',
                         'duration' => 0,
@@ -40,6 +41,7 @@ class TestDataSeeder extends Seeder
                     ]);
                 }
             }
-	}
+        }
     }
 }
+
