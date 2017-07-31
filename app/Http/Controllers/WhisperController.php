@@ -30,7 +30,7 @@ class WhisperController extends Controller
 }
 
 function getKeywordList($json_param) {
-   $keywords = DB::select('select id,word from keywords');
+   $keywords = DB::select('select id,keyword from keywords');
    $data = array( 
         'list' => $keywords,
     );   
@@ -50,9 +50,13 @@ function getChannelList($json_param) {
         return paramIllegal();
     }
     $id = $param->id;
-    $channels = DB::select('select id,title,iconUrl,description from channels where type = ?', [$id]);
+    $channels = DB::select('select id,title,iconUrl,description from channels where catalogId = ?', [$id]);
     if(count($channels) <= 0) {
 
+    }
+    $num = count($channels);
+    for($i = 0; $i < $num; $i++) {
+	$channels[$i]->id = 'CN'.$channels[$i]->id;
     }
     $data = array(
         'id' => $id,
@@ -72,16 +76,20 @@ function getMediaList($json_param) {
     if(!isset($param->id)) {
         return paramIllegal();
     }
-    $id = $param->id;
+    $id = substr($param->id, 2);
     $info = DB::select('select id,title,iconUrl,description from channels where id = ?', [$id]);
     if(count($info) <= 0) {
         return returnError(2, "id not exist");
     }
-    $channels = DB::select('select id,netSource,duration,title,iconUrl,description,album,artist,genre from media where channelId = ?', [$id]);
+    $media = DB::select('select id,netSource,duration,title,iconUrl,description,album,artist,genre from media where channelId = ?', [$id]);
+    $num = count($media);
+    for($i = 0; $i < $num; $i++) {
+	$media[$i]->id = 'MD'.$media[$i]->id;
+    }
     $data = array(
         'id' => $id,
         'info' => $info[0],
-        'list' => $channels,
+        'list' => $media,
     );
     $result = array(
         'errCode' => 0,

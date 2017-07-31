@@ -15,7 +15,7 @@ class CreateKeywordTable extends Migration
     {
         Schema::create('keywords', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('word');
+            $table->string('keyword');
         });
     }
 

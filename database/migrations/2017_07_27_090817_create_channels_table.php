@@ -16,7 +16,7 @@ class CreateChannelsTable extends Migration
         Schema::create('channels', function (Blueprint $table) {
             $table->increments('inc_id');
             $table->string('id');
-            $table->string('type');
+	    $table->string('catalogId');
             $table->string('title');
             $table->string('iconUrl');
             $table->string('description');
