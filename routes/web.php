@@ -15,3 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/api', 'WhisperController@api')->name('api');
+Route::post('/reportErrId', 'WhisperController@reportErrId');
+#Route::match(['get', 'post'], '/api', 'WhisperController@api')->name('api');

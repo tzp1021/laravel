@@ -15,8 +15,32 @@ class WhisperController extends Controller
             return getChannelList($json_param);
         } else if(strcmp($op, "getMediaList") == 0) {
             return getMediaList($json_param);
-        }
+        } else if(strcmp($op, "getKeywordList") == 0) {
+	    return getKeywordList($json_param);
+	}
     }
+
+    function reportErrId(Request $request) {
+        echo $request->id;
+	echo '<br>';
+	echo $request->msg;
+	DB::table('mediaerr')->insert(['mediaid' => $request->id, 'msg' => $request->msg]);
+    }
+
+}
+
+function getKeywordList($json_param) {
+   $keywords = DB::select('select id,word from keywords');
+   $data = array( 
+        'list' => $keywords,
+    );   
+    $result = array(
+        'errCode' => 0,
+        'errMsg' => "Succeed",
+        'data' => $data,
+    );       
+    return json_encode($result);
+
 }
 
 function getChannelList($json_param) {
@@ -77,4 +101,8 @@ function returnError($code, $msg) {
         'errMsg' => $msg,
     );
     return json_encode($result);
+}
+
+function reportErrId(Request $request) {
+    echo $request->id;
 }

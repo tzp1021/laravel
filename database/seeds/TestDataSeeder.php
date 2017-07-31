@@ -42,6 +42,11 @@ class TestDataSeeder extends Seeder
                 }
             }
         }
+	for($wordCount = 0; $wordCount < 10; $wordCount++) {
+	    DB::table('keywords')->insert([
+		'word' => 'keyword '.$wordCount,
+	    ]);
+	}
     }
 }
 
