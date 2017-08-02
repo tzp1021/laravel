@@ -30,8 +30,8 @@ class TestDataSeeder extends Seeder
                     DB::table('media')->insert([
                         'id' => $cata * 10 + $mediaCount,
                         'channelId' => $channelId,
-                        'netSource' => 'https://www.youtube.com/watch?v=PMivT7MJ41M',
-                        'duration' => 210,
+                        'netSource' => 'https://www.youtube.com/watch?v=AE-bpVg6oW8',
+                        'duration' => 219,
                         'title' => 'media title '.$mediaCount,
                         'iconUrl' => 'http://img.redocn.com/sheji/20160422/shishangheiseyinlefengmian_6211375.jpg',
                         'description' => 'media description '.$mediaCount,
