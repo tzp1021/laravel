@@ -81,7 +81,7 @@ function getMediaList($json_param) {
     if(count($info) <= 0) {
         return returnError(2, "id not exist");
     }
-    $media = DB::select('select id,netSource,duration,title,iconUrl,description,album,artist,genre from media where channelId = ?', [$id]);
+    $media = DB::select('select media.id,netSource,duration,title,iconUrl,description from media join channel_media on media.id = mediaId and channelId = ?', [$id]);
     $num = count($media);
     for($i = 0; $i < $num; $i++) {
 	$media[$i]->id = 'MD'.$media[$i]->id;

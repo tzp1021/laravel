@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
 
 class TestDataSeeder extends Seeder
 {
@@ -9,44 +11,40 @@ class TestDataSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-        $splitNull = '0';
-        $splitChar = ':';
-        $catalogIds = array('__CATALOG_MUSIC__', '__CATALOG_RADIO__', '__CATALOG_TSHOW__');
-        $typeCode = array('CL', 'CN', 'MD');
-        for($cata = 0; $cata < 3; $cata++) {
-            $cataId = $catalogIds[$cata];
-            for($channelCount = 1; $channelCount <= 3; $channelCount++) {
-                $channelId = $cata * 3 + $channelCount;
-                DB::table('channels')->insert([
-                    'id' => $channelId,
-                    'catalogId' => $cataId,
-                    'title' => 'channel title '.$channelCount,
-                    'iconUrl' => 'http://img.redocn.com/sheji/20160422/shishangheiseyinlefengmian_6211375.jpg',
-                    'description' => 'channel description '.$channelCount,
-                ]);
-                for($mediaCount = 1; $mediaCount <= 10; $mediaCount++) {
-                    DB::table('media')->insert([
-                        'id' => $cata * 10 + $mediaCount,
-                        'channelId' => $channelId,
-                        'netSource' => 'https://www.youtube.com/watch?v=AE-bpVg6oW8',
-                        'duration' => 219,
-                        'title' => 'media title '.$mediaCount,
-                        'iconUrl' => 'http://img.redocn.com/sheji/20160422/shishangheiseyinlefengmian_6211375.jpg',
-                        'description' => 'media description '.$mediaCount,
-                        'album' => 'album '.$mediaCount,
-                        'artist' => 'artist '.$mediaCount,
-                        'genre' => 'genre '.$mediaCount,
-                    ]);
-                }
-            }
-        }
-	for($wordCount = 0; $wordCount < 10; $wordCount++) {
-	    DB::table('keywords')->insert([
-		'keyword' => 'keyword '.$wordCount,
+    public function run() {
+	$catalogIds = array('__CATALOG_MUSIC__', '__CATALOG_RADIO__', '__CATALOG_TSHOW__');
+	$channels = DB::select('select * from whisper_channel_data');
+	for($i = 0; $i < count($channels); $i++) {
+	   $type = $channels[$i]->channel_type;
+	    DB::table('channels')->insert([
+		'id' => $channels[$i]->channel_md5,
+		'iconUrl' => $channels[$i]->icon_url,
+		'catalogId' => $catalogIds[$type - 100],
+		'subscribe' => $channels[$i]->subscribe,
 	    ]);
 	}
+
+	$media = DB::select('select * from whisper_media_data');
+        for($i = 0; $i < count($media); $i++) {
+            DB::table('media')->insert([
+                'id' => $media[$i]->media_md5,
+                'videoId' => $media[$i]->youtube_video_id,
+                'netSource' => $media[$i]->source_url,
+                'duration' => $media[$i]->duration,
+		'title' => $media[$i]->title,
+		'iconUrl' => $media[$i]->icon_url,
+            ]); 
+        }
+
+	$channel_media = DB::select('select * from whisper_media_channel_unite_data');
+        for($i = 0; $i < count($channel_media); $i++) {
+            DB::table('channel_media')->insert([
+                'id' => $channel_media[$i]->channel_media_unite_md5,
+                'channelId' => $channel_media[$i]->channel_md5,
+                'mediaId' => $channel_media[$i]->media_md5,
+            ]); 
+        }
     }
 }
+
 

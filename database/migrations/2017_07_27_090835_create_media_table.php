@@ -14,17 +14,16 @@ class CreateMediaTable extends Migration
     public function up()
     {
         Schema::create('media', function (Blueprint $table) {
-            $table->increments('inc_id');
             $table->string('id');
-            $table->string('channelId');
+	    $table->string('videoId')->nullable();
             $table->string('netSource');
             $table->integer('duration');
-            $table->string('title');
-            $table->string('iconUrl');
-            $table->string('description');
-            $table->string('album');
-            $table->string('artist');
-            $table->string('genre');
+            $table->string('title')->nullable();
+            $table->string('iconUrl')->nullable();
+            $table->string('description')->nullable();
+            $table->string('album')->nullable();
+            $table->string('artist')->nullable();
+            $table->string('genre')->nullable();
             $table->timestamps();
         });
     }
