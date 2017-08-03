@@ -18,6 +18,10 @@ class CreateChannelMediaTable extends Migration
 	    $table->string('channelId');
 	    $table->string('mediaId');
 	    $table->timestamps();
+
+	    $table->primary('id');
+	    $table->foreign('channelId')->references('id')->on('channels')->onDelete('cascade');
+	    $table->foreign('mediaId')->references('id')->on('media')->onDelete('cascade');
 	});
     }
 

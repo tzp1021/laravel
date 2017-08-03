@@ -15,8 +15,11 @@ class CreateReportmediaerrTable extends Migration
     {
         Schema::create('mediaerr', function(Blueprint $table) {
 	    $table->increments('id');
-	    $table->string('mediaid');
+	    $table->string('mediaId');
 	    $table->string('msg');
+	    $table->timestamps();
+
+	    $table->index('mediaId');
 	});
     }
 

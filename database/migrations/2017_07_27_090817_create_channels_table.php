@@ -15,12 +15,16 @@ class CreateChannelsTable extends Migration
     {
         Schema::create('channels', function (Blueprint $table) {
             $table->string('id');
-	    $table->string('catalogId');
+	    $table->integer('catalogId');
             $table->string('title')->nullable();
+	    $table->string('sourceUrl')->nullable();
             $table->string('iconUrl')->nullable();
             $table->string('description')->nullable();
 	    $table->integer('subscribe')->nullable();
-            $table->timestamps();
+	    $table->timestamps();
+
+	    $table->primary('id');
+	    $table->index('catalogId');
         });
     }
 

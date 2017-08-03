@@ -8,5 +8,5 @@ class Channel extends Model
 {
     protected $table = 'channels';
 
-    protected $fillable = ['id', 'type', 'title', 'iconUrl', 'description'];
+    protected $fillable = ['id', 'catalogId', 'title', 'sourceUrl', 'iconUrl', 'description', 'subscribe'];
 }

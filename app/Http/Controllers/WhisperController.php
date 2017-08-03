@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\DB;
+
+use App\Models\Channel;
+use APp\Models\Media;
+use APp\Models\ChannelMedia;
+use APp\Models\Keyword;
+use APp\Models\MediaErr;
 
 class WhisperController extends Controller
 {
@@ -24,7 +29,7 @@ class WhisperController extends Controller
         echo $request->id;
 	echo '<br>';
 	echo $request->msg;
-	DB::table('mediaerr')->insert(['mediaid' => $request->id, 'msg' => $request->msg]);
+	MediaErr::create(['mediaId' => $request->id, 'msg' => $request->msg]);
     }
 
 }
@@ -33,12 +38,12 @@ function getKeywordList($json_param) {
    $keywords = DB::select('select id,keyword from keywords');
    $data = array( 
         'list' => $keywords,
-    );   
+    );
     $result = array(
         'errCode' => 0,
         'errMsg' => "Succeed",
         'data' => $data,
-    );       
+    );
     return json_encode($result);
 
 }
@@ -50,7 +55,7 @@ function getChannelList($json_param) {
         return paramIllegal();
     }
     $id = $param->id;
-    $channels = DB::select('select id,title,iconUrl,description from channels where catalogId = ?', [$id]);
+    $channels = DB::select('select id,title,iconUrl,description,updated_at from channels where catalogId = ?', [$id]);
     if(count($channels) <= 0) {
 
     }
@@ -77,7 +82,7 @@ function getMediaList($json_param) {
         return paramIllegal();
     }
     $id = substr($param->id, 2);
-    $info = DB::select('select id,title,iconUrl,description from channels where id = ?', [$id]);
+    $info = DB::select('select id,title,iconUrl,description,updated_at from channels where id = ?', [$id]);
     if(count($info) <= 0) {
         return returnError(2, "id not exist");
     }
