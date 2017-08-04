@@ -71,9 +71,10 @@ class TestDataSeeder extends Seeder
 #	    });
         }
 
-	for($i = 0; $i < 10; $i++) {
+	$keywords = array('Vidya Vox', 'Justin Biber', 'Sonu Nigam', 'Ed Sheeran', 'Arijit Singh', 'Mere Rashke Qamar', 'Despacito', 'Mi Gente', 'Qismat', 'Voodoo Song');
+	for($i = 0; $i < count($keywords); $i++) {
 	    $kw = Keyword::updateOrCreate([
-		'keyword' => 'keyword '.$i,
+		'keyword' => $keywords[$i],
 	    ]);
 	}
     }
