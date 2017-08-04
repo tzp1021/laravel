@@ -102,24 +102,22 @@ function getChannelList($json_param) {
 
 function getMediaList($json_param) {
     $param = json_decode($json_param);
-    if(!isset($param->id)) {
+    if(!isset($param->id)|| strlen($param->id) < 3) {
         return paramIllegal();
     }
     $id = substr($param->id, 2);
-    echo $id;
     $info = DB::select('select id,title,iconUrl,description from channels where id = ?', [$id]);
     if(count($info) <= 0) {
         return returnError(2, "id not exist");
-    } else {
-	echo $id;
     }
+    $info[0]->id = 'CN'.$info[0]->id;
     $media = DB::select('select media.id,netSource,duration,title,iconUrl,description from media join channel_media on media.id = mediaId where channelId = ?', [$id]);
     $num = count($media);
     for($i = 0; $i < $num; $i++) {
 	$media[$i]->id = 'MD'.$media[$i]->id;
     }
     $data = array(
-        'id' => $id,
+        'id' => 'CN'.$id,
         'info' => $info[0],
         'list' => $media,
     );
