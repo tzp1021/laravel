@@ -21,10 +21,11 @@ class CreateChannelsTable extends Migration
             $table->string('iconUrl')->nullable();
             $table->string('description')->nullable();
 	    $table->integer('subscribe')->nullable();
+	    $table->unsignedBigInteger('timeStamp')->nullable;
 	    $table->timestamps();
 
 	    $table->primary('id');
-	    $table->index('catalogId');
+	    $table->foreign('catalogId')->references('id')->on('catalog')->onDelete('cascade');
         });
     }
 

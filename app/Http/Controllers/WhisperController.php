@@ -6,22 +6,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Channel;
-use APp\Models\Media;
-use APp\Models\ChannelMedia;
-use APp\Models\Keyword;
-use APp\Models\MediaErr;
+use App\Models\Media;
+use App\Models\ChannelMedia;
+use App\Models\Keyword;
+use App\Models\MediaErr;
+use App\Models\Catalog;
 
 class WhisperController extends Controller
 {
     public function api(Request $request) {
         $op = $request->input('op');
         $json_param = $request->input('json_param');
-        if(strcmp($op, "getChannelList") == 0) {
+        if(strcmp($op, 'getChannelList') == 0) {
             return getChannelList($json_param);
-        } else if(strcmp($op, "getMediaList") == 0) {
+        } else if(strcmp($op, 'getMediaList') == 0) {
             return getMediaList($json_param);
-        } else if(strcmp($op, "getKeywordList") == 0) {
+        } else if(strcmp($op, 'getKeywordList') == 0) {
 	    return getKeywordList($json_param);
+	} else if(strcmp($op, 'getTimeStampList') == 0) {
+	    return getTimeStampList($json_param);
 	}
     }
 
@@ -32,6 +35,26 @@ class WhisperController extends Controller
 	MediaErr::create(['mediaId' => $request->id, 'msg' => $request->msg]);
     }
 
+}
+
+function getTimeStampList() {
+    $catalogs = DB::select('select code as id, timeStamp from catalog');
+    for($i = 0; $i < count($catalogs); $i++) {
+	$catalogs[$i]->id = 'CA'.$catalogs[$i]->id;
+    }
+    $channels = DB::select('select id, timeStamp from channels');
+    for($i = 0; $i < count($channels); $i++) {
+	$channels[$i]->id = 'CN'.$channels[$i]->id;
+    }
+    $data = array(
+        'timeList' => array_merge($catalogs, $channels),
+    );
+    $result = array(
+        'errCode' => 0,
+        'errMsg' => "Succeed",
+        'data' => $data,
+    );
+    return json_encode($result);
 }
 
 function getKeywordList($json_param) {
@@ -54,8 +77,12 @@ function getChannelList($json_param) {
     if(!isset($param->id)) {
         return paramIllegal();
     }
-    $id = $param->id;
-    $channels = DB::select('select id,title,iconUrl,description,updated_at from channels where catalogId = ?', [$id]);
+    $catalog = DB::select('select id from catalog where code = ?', [$param->id]);
+    if(count($catalog)) {
+
+    }
+    $id = $catalog[0]->id;
+    $channels = DB::select('select id,title,iconUrl,description from channels where catalogId = ?', [$id]);
     if(count($channels) <= 0) {
 
     }
@@ -82,11 +109,14 @@ function getMediaList($json_param) {
         return paramIllegal();
     }
     $id = substr($param->id, 2);
-    $info = DB::select('select id,title,iconUrl,description,updated_at from channels where id = ?', [$id]);
+    echo $id;
+    $info = DB::select('select id,title,iconUrl,description from channels where id = ?', [$id]);
     if(count($info) <= 0) {
         return returnError(2, "id not exist");
+    } else {
+	echo $id;
     }
-    $media = DB::select('select media.id,netSource,duration,title,iconUrl,description from media join channel_media on media.id = mediaId and channelId = ?', [$id]);
+    $media = DB::select('select media.id,netSource,duration,title,iconUrl,description from media join channel_media on media.id = mediaId where channelId = ?', [$id]);
     $num = count($media);
     for($i = 0; $i < $num; $i++) {
 	$media[$i]->id = 'MD'.$media[$i]->id;

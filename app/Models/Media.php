@@ -8,5 +8,5 @@ class Media extends Model
 {
     protected $table = 'media';
 
-    protected $fillable = ['id', 'videoId', 'netSource', 'duration', 'title', 'iconUrl', 'description', 'album', 'artist', 'genre'];
+    protected $fillable = ['id', 'videoId', 'netSource', 'duration', 'title', 'iconUrl', 'description', 'album', 'artist', 'genre', 'timeStamp'];
 }
