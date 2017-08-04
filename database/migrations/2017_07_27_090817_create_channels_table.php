@@ -15,6 +15,7 @@ class CreateChannelsTable extends Migration
     {
         Schema::create('channels', function (Blueprint $table) {
             $table->string('id');
+	    $table->integer('channel_id');
 	    $table->integer('catalogId');
             $table->string('title')->nullable();
 	    $table->string('sourceUrl')->nullable();
@@ -25,6 +26,7 @@ class CreateChannelsTable extends Migration
 	    $table->timestamps();
 
 	    $table->primary('id');
+	    $table->unique('channel_id');
 	    $table->foreign('catalogId')->references('id')->on('catalog')->onDelete('cascade');
         });
     }

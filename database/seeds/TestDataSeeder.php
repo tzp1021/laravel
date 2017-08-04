@@ -32,6 +32,7 @@ class TestDataSeeder extends Seeder
         for($i = 0; $i < count($channels); $i++) {
 	    $chan = Channel::updateOrCreate([
 		'id' => $channels[$i]->channel_md5,
+		'channel_id' => $channels[$i]->channel_id,
 		'sourceUrl' => $channels[$i]->source_url,
 		'title' => $channels[$i]->title,
 		'iconUrl' => $channels[$i]->icon_url,

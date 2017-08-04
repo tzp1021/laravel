@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
+use App\Models\Channel;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -14,3 +16,5 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
     }
 }
+
+
