@@ -39,9 +39,6 @@ class WhisperController extends Controller
 
 function getTimeStampList() {
     $catalogs = DB::select('select code as id, timeStamp from catalog');
-    for($i = 0; $i < count($catalogs); $i++) {
-	$catalogs[$i]->id = 'CA'.$catalogs[$i]->id;
-    }
     $channels = DB::select('select id, timeStamp from channels');
     for($i = 0; $i < count($channels); $i++) {
 	$channels[$i]->id = 'CN'.$channels[$i]->id;
