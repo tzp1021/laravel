@@ -29,10 +29,13 @@ class WhisperController extends Controller
     }
 
     function reportErrId(Request $request) {
-        echo $request->id;
-	echo '<br>';
-	echo $request->msg;
 	MediaErr::create(['mediaId' => $request->id, 'msg' => $request->msg]);
+	$result = array(
+            'errCode' => 0,
+            'errMsg' => "Succeed",
+        );
+	return json_encode($result);
+
     }
 
 }
