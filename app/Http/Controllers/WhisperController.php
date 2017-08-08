@@ -69,7 +69,6 @@ function getKeywordList($json_param) {
 }
 
 function getChannelList($json_param) {
-
     $param = json_decode($json_param);
     if(!isset($param->id)) {
         return paramIllegal();
@@ -79,7 +78,7 @@ function getChannelList($json_param) {
 
     }
     $id = $catalog[0]->id;
-    $channels = DB::select('select id,title,iconUrl,description from channels where catalogId = ?', [$id]);
+    $channels = DB::select('select channels.id,title,iconUrl,description,priority from channels join channel_order on channel_id = channel_order.id where catalogId = ? order by priority desc', [$id]);
     if(count($channels) <= 0) {
 
     }
@@ -111,7 +110,7 @@ function getMediaList($json_param) {
         return returnError(2, "id not exist");
     }
     $info[0]->id = 'CN'.$info[0]->id;
-    $media = DB::select('select media.id,netSource,duration,title,iconUrl,description from media join channel_media on media.id = mediaId where channelId = ?', [$id]);
+    $media = DB::select('select media.id,netSource,duration,title,iconUrl,description from media join channel_media on media.id = mediaId where channelId = ? order by media.updated_at desc', [$id]);
     $num = count($media);
     for($i = 0; $i < $num; $i++) {
 	$media[$i]->id = 'MD'.$media[$i]->id;
