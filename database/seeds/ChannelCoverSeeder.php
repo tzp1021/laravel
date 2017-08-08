@@ -13,13 +13,12 @@ class ChannelCoverSeeder extends Seeder
      */
     public function run()
     {
-#        $path = 'http://ec2-13-126-95-153.ap-south-1.compute.amazonaws.com/cover/';
-#        $names = array('cover100001.png', 'cover100002.png', 'cover100003.png', 'cover101000.png', 'cover101001.png', 'cover102000.png', 't-series.png');
-#        for($i = 0; $i < count($names); $i++) {
-#            $id = substr($names[$i], 5, 11);
-#            Channel::where('channel_id', $id)->update(['iconUrl' => $path.$names[$i]]);
-#	}
-	Channel::updateOrCreate(['id' => 'test'],['channel_id' => '1', 'title' => 'दी कपिल शर्मा शो', 'catalogId' => '100', 'timeStamp' => time()]);
+        $path = 'http://ec2-13-126-95-153.ap-south-1.compute.amazonaws.com/cover/';
+        $names = array('100001.png', '100002.png', '100003.png', '100004.png', '101000.png', '101001.png', '101003.png', '101004.png', '1010006.png', '102000.png', '102002.png', '102003.png', '102008.jpg', '102009.png');
+        for($i = 0; $i < count($names); $i++) {
+	    $id = substr($names[$i], 0, 6);
+            Channel::where('channel_id', $id)->update(['iconUrl' => $path.$names[$i]]);
+	}
     }
 
 }
