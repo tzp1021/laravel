@@ -22,6 +22,7 @@ class CreateChannelsTable extends Migration
             $table->string('iconUrl')->nullable();
             $table->string('description')->nullable();
 	    $table->integer('subscribe')->nullable();
+	    $table->boolean('online')->default(false);
 	    $table->unsignedBigInteger('timeStamp')->nullable;
 	    $table->timestamps();
 

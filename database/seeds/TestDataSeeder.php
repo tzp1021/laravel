@@ -38,6 +38,7 @@ class TestDataSeeder extends Seeder
 		'iconUrl' => $channels[$i]->icon_url,
 		'catalogId' => $channels[$i]->channel_type,
 		'subscribe' => $channels[$i]->subscribe,
+		'online' => true,
 		'timeStamp' => time(),
 	    ]);
 
@@ -54,6 +55,7 @@ class TestDataSeeder extends Seeder
                 'duration' => $media[$i]->duration,
                 'title' => $media[$i]->title,
                 'iconUrl' => $media[$i]->icon_url,
+		'online' => true,
 		'timeStamp' => time(),
             ]); 
         }

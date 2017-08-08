@@ -24,6 +24,7 @@ class CreateMediaTable extends Migration
             $table->string('album')->nullable();
             $table->string('artist')->nullable();
             $table->string('genre')->nullable();
+	    $table->boolean('online')->default(false);
             $table->unsignedBigInteger('timeStamp')->nullable;
 	    $table->timestamps();
 
