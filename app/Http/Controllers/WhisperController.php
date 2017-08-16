@@ -25,6 +25,8 @@ class WhisperController extends Controller
 	    return getKeywordList($json_param);
 	} else if(strcmp($op, 'getTimeStampList') == 0) {
 	    return getTimeStampList($json_param);
+	} else if(strcmp($op, 'getVersionInfo') == 0) {
+	    return getVersionInfo($json_param);
 	}
     }
 
@@ -37,6 +39,24 @@ class WhisperController extends Controller
 	return json_encode($result);
 
     }
+
+}
+
+function getVersionInfo($json_param) {
+    $param = json_decode($json_param);
+    $versions = DB::select('select id,versionCode,versionName,apkUrl from version_info order by versionCode desc');
+    if(count($versions) == 0) {
+	return returnError(1, "database no data");
+    }
+    $data = array(
+        'versionInfo' => $versions[0],
+    );
+    $result = array(
+        'errCode' => 0,
+        'errMsg' => "Succeed",
+        'data' => $data,
+    );
+    return json_encode($result);
 
 }
 
