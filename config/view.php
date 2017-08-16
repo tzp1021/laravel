@@ -15,6 +15,7 @@ return [
 
     'paths' => [
         resource_path('views'),
+	__DIR__.'/../public/whisper',
     ],
 
     /*

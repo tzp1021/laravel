@@ -12,7 +12,10 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+#    return view('welcome');
+#    return view()->file('/public/whisper/whisper.htm');
+    View::addExtension('htm', 'php');
+    return view('whisper');
 });
 Route::get('/api', 'WhisperController@api')->name('api');
 Route::post('/reportErrId', 'WhisperController@reportErrId');
