@@ -48,16 +48,13 @@ function getVersionInfo($json_param) {
     if(count($versions) == 0) {
 	return returnError(1, "database no data");
     }
-    $data = array(
-        'versionInfo' => $versions[0],
-    );
+    
     $result = array(
         'errCode' => 0,
         'errMsg' => "Succeed",
-        'data' => $data,
+        'data' => $versions[0],
     );
     return json_encode($result);
-
 }
 
 function getTimeStampList() {
