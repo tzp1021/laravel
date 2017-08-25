@@ -17,7 +17,7 @@ class SyncDataBaseSeeder extends Seeder
      */
     public function run()
     {
-	$path = 'http://ec2-13-126-95-153.ap-south-1.compute.amazonaws.com/cover/';
+	$path = 'http://feedssource.moment.yirgalab.com/';
         $channels = DB::select('select * from whisper_channel_data');
         for($i = 0; $i < count($channels); $i++) {
             $chan = Channel::find($channels[$i]->channel_md5);
