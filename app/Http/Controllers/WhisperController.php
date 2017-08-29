@@ -45,11 +45,14 @@ class WhisperController extends Controller
 }
 
 function getAllMediaId($json_param) {
-    $medias = DB::select('select id,videoId from media');
+    $medias = DB::select('select id,videoId from media where online = false');
+    $data = array(
+        'mediaList' => $medias,
+    );
     $result = array(
         'errCode' => 0,
         'errMsg' => "Succeed",
-        'data' => $medias,
+        'data' => $data,
     );
     return json_encode($result);
 
