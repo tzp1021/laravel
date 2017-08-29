@@ -27,6 +27,8 @@ class WhisperController extends Controller
 	    return getTimeStampList($json_param);
 	} else if(strcmp($op, 'getVersionInfo') == 0) {
 	    return getVersionInfo($json_param);
+	} else if(strcmp($op, 'getAllMediaId') == 0) {
+	    return getAllMediaId($json_param);
 	}
     }
 
@@ -39,6 +41,17 @@ class WhisperController extends Controller
 	return json_encode($result);
 
     }
+
+}
+
+function getAllMediaId($json_param) {
+    $medias = DB::select('select id,videoId from media');
+    $result = array(
+        'errCode' => 0,
+        'errMsg' => "Succeed",
+        'data' => $medias,
+    );
+    return json_encode($result);
 
 }
 
