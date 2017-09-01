@@ -12,12 +12,12 @@ class MediaOfflineSeeder extends Seeder
      */
     public function run()
     {
-        $file = fopen('/home/ubuntu/media.txt', 'r') or die('Unable to open file!');
+        $file = fopen('/home/ubuntu/media_offline_2.txt', 'r') or die('Unable to open file!');
         $medias = array();
         while(!feof($file)) {
             $line = fgets($file);
             $strs = preg_split('/[\s]+/', $line);
-            array_push($medias, $strs[10]);
+            array_push($medias, $strs[0]);
         }
         fclose($file);
 	echo count($medias);
