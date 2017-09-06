@@ -23,23 +23,25 @@ class WhisperController extends Controller
             return getMediaList($json_param);
         } else if(strcmp($op, 'getKeywordList') == 0) {
 	    return getKeywordList($json_param);
-	} else if(strcmp($op, 'getTimeStampList') == 0) {
-	    return getTimeStampList($json_param);
-	} else if(strcmp($op, 'getVersionInfo') == 0) {
-	    return getVersionInfo($json_param);
-	} else if(strcmp($op, 'getAllMediaId') == 0) {
-	    return getAllMediaId($json_param);
-	}
+	    } else if(strcmp($op, 'getTimeStampList') == 0) {
+	        return getTimeStampList($json_param);
+    	} else if(strcmp($op, 'getVersionInfo') == 0) {
+	        return getVersionInfo($json_param);
+    	} else if(strcmp($op, 'getAllMediaId') == 0) {
+	        return getAllMediaId($json_param);
+    	} else if(strcmp($op, 'getMediaList2') == 0) {
+            return getMediaList2($json_param);
+        }
     }
 
     function reportErrId(Request $request) {
-	MediaErr::create(['mediaId' => $request->id, 'msg' => $request->msg]);
-	$result = array(
+	    MediaErr::create(['mediaId' => $request->id, 'msg' => $request->msg]);
+    	$result = array(
             'errCode' => 0,
             'errMsg' => "Succeed",
-	    'data' => array(),
+	        'data' => array(),
         );
-	return json_encode($result);
+	    return json_encode($result);
 
     }
 
@@ -63,7 +65,7 @@ function getVersionInfo($json_param) {
     $param = json_decode($json_param);
     $versions = DB::select('select id,versionCode,versionName,apkUrl from version_info order by versionCode desc');
     if(count($versions) == 0) {
-	return returnError(1, "database no data");
+	    return returnError(1, "database no data");
     }
     
     $result = array(
@@ -78,7 +80,7 @@ function getTimeStampList() {
     $catalogs = DB::select('select code as id, timeStamp from catalog');
     $channels = DB::select('select id, timeStamp from channels');
     for($i = 0; $i < count($channels); $i++) {
-	$channels[$i]->id = 'CN'.$channels[$i]->id;
+	    $channels[$i]->id = 'CN'.$channels[$i]->id;
     }
     $data = array(
         'timeList' => array_merge($catalogs, $channels),
@@ -121,7 +123,7 @@ function getChannelList($json_param) {
     }
     $num = count($channels);
     for($i = 0; $i < $num; $i++) {
-	$channels[$i]->id = 'CN'.$channels[$i]->id;
+    	$channels[$i]->id = 'CN'.$channels[$i]->id;
     }
     $data = array(
         'id' => $id,
@@ -150,8 +152,8 @@ function getMediaList($json_param) {
     $media = DB::select('select media.id,netSource,duration,title,iconUrl,description from media join channel_media on media.id = mediaId where channelId = ? and online = true order by media.updated_at desc', [$id]);
     $num = count($media);
     for($i = 0; $i < $num; $i++) {
-	$media[$i]->id = 'MD'.$media[$i]->id;
-	$media[$i]->channelName = $info[0]->title;
+	    $media[$i]->id = 'MD'.$media[$i]->id;
+    	$media[$i]->channelName = $info[0]->title;
     }
     $data = array(
         'id' => 'CN'.$id,
@@ -165,6 +167,37 @@ function getMediaList($json_param) {
     );
     return json_encode($result);
 }
+
+function getMediaList2($json_param) {
+    $param = json_decode($json_param);
+    if(!isset($param->id)|| strlen($param->id) < 3) {
+        return paramIllegal();
+    }
+    $id = substr($param->id, 2);
+    $info = DB::select('select id,title,iconUrl,description from channels where id = ?', [$id]);
+    if(count($info) <= 0) {
+        return returnError(2, "id not exist");
+    }
+    $info[0]->id = 'CN'.$info[0]->id;
+    $media = DB::select('select media.id,netSource,duration,title,iconUrl,description,type,audioUrl from media join channel_media on media.id = mediaId where channelId = ? and online = true order by media.updated_at desc', [$id]);
+    $num = count($media);
+    for($i = 0; $i < $num; $i++) {
+        $media[$i]->id = 'MD'.$media[$i]->id;
+        $media[$i]->channelName = $info[0]->title;
+    }
+    $data = array(
+        'id' => 'CN'.$id,
+        'info' => $info[0],
+        'list' => $media,
+    );
+    $result = array(
+        'errCode' => 0,
+        'errMsg' => "Succeed",
+        'data' => $data
+    );
+    return json_encode($result);
+}
+
 
 function paramIllegal() {
     return returnError(1, "param illegal");
