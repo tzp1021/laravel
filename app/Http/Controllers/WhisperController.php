@@ -42,13 +42,11 @@ class WhisperController extends Controller
 	        'data' => array(),
         );
 	    return json_encode($result);
-
     }
-
 }
 
 function getAllMediaId($json_param) {
-    $medias = DB::select('select id,videoId from media where online = true');
+    $medias = DB::select('select * from media where audioUrl IS NULL');
     $data = array(
         'mediaList' => $medias,
     );
@@ -58,8 +56,9 @@ function getAllMediaId($json_param) {
         'data' => $data,
     );
     return json_encode($result);
-
 }
+
+
 
 function getVersionInfo($json_param) {
     $param = json_decode($json_param);
@@ -179,7 +178,7 @@ function getMediaList2($json_param) {
         return returnError(2, "id not exist");
     }
     $info[0]->id = 'CN'.$info[0]->id;
-    $media = DB::select('select media.id,netSource,duration,title,iconUrl,description,type,audioUrl from media join channel_media on media.id = mediaId where channelId = ? and online = true order by media.updated_at desc', [$id]);
+    $media = DB::select('select media.id,netSource,duration,title,iconUrl,description,type,audioUrl from media join channel_media on media.id = mediaId where channelId = ? and online = true and audioUrl IS NOT NULL order by media.updated_at desc', [$id]);
     $num = count($media);
     for($i = 0; $i < $num; $i++) {
         $media[$i]->id = 'MD'.$media[$i]->id;
