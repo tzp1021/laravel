@@ -13,9 +13,9 @@ class UpdateApkVersionInfoSeeder extends Seeder
     public function run()
     {
         ApkVersion::create([
-    	'versionCode' => 12,
-	    'versionName' => '1.11.9',
-    	'apkUrl' => 'http://feedssource.moment.yirgalab.com/Whisper-webpage-release-1.11.9-12.apk',
+    	'versionCode' => 14,
+	    'versionName' => '1.13.14',
+    	'apkUrl' => 'http://feedssource.moment.yirgalab.com/Whisper-webpage-release-1.13.14-14.apk',
 	    ]);
     }
 }
