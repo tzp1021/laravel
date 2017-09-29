@@ -12,8 +12,6 @@
 */
 
 Route::get('/', function () {
-#    return view('welcome');
-#    return view()->file('/public/whisper/whisper.htm');
     View::addExtension('htm', 'php');
     return view('whisper');
 });
@@ -21,4 +19,9 @@ Route::get('/api', 'WhisperController@api')->name('api');
 Route::post('/reportErrId', 'WhisperController@reportErrId');
 
 Route::get('/gotit-api', 'GotitController@api');
-#Route::match(['get', 'post'], '/api', 'WhisperController@api')->name('api');
+
+Route::get('login', 'SessionsController@create')->name('login');
+Route::post('login', 'SessionsController@store')->name('login');
+Route::delete('logout', 'SessionsController@destroy')->name('logout');
+
+Route::get('edit', 'EditController@edit')->name('edit');
