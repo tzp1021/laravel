@@ -5,9 +5,7 @@
     <link rel="stylesheet" href="/css/app.css">
   </head>
   <body>
-    @yield('header')
-
-    <div>
+    <div class="container">
       <div >
         @include('shared._messages')
         @yield('content')

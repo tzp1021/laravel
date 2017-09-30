@@ -6,4 +6,10 @@
 @stop
 
 @section ('content')
-hello
+<div id="cl-wrapper">
+    <ul class="sub-menu">
+        <li>hello</li>
+        <li>world</li>
+    </ul>
+</div>
+@stop

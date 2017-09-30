@@ -1,4 +1,4 @@
-@extends ('layouts.default')
+@extends ('layouts.default-login')
 @section ('title', 'Whisper Login')
 
 @section ('content')
